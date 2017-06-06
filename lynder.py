@@ -36,7 +36,7 @@ def get_tutorial_data(link):
             lectures = []
             for lecture in chapter.find_all('a', attrs={'class':'video-name'}):
                 lectures.append((lecture.text.strip(), lecture["href"]))
-            chapters[ch.text.strip()] = lectures
+            chapters[ch.text.strip().replace(":", " -").replace('/', "-")] = lectures
 
     tutorial["chapters"] = chapters
     print("\tIt has " + str(len(chapters)) + " chapters.")
@@ -98,7 +98,6 @@ password = input("Lynda Password: ")
 if arguments.file:
     urls = open(arguments.file,'r')
     for url in urls:
-        print(url)
         download_tutorial(url.strip(), username, password)
 else:
     if arguments.url:

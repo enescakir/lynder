@@ -85,12 +85,24 @@ def download_videos(tutorial, username, password):
         os.chdir("..")
     print("DOWNLOADING IS DONE")
     os.sys("open .")
+
 ### MAIN METHOD
-if len(sys.argv) == 2:
-    link = sys.argv[1]
-else:
-    link = input("Link of tutorial: ")
+parser = argparse.ArgumentParser(description='Lynda Tutorial Downloader')
+parser.add_argument('-u', '--url', dest="url", action='store')
+parser.add_argument('-f', '--file', dest="file", action='store')
+arguments = parser.parse_args()
+
 username = input("Lynda Username: ")
 password = input("Lynda Password: ")
 
-download_tutorial(link, username, password)
+if arguments.file:
+    urls = open(arguments.file,'r')
+    for url in urls:
+        print(url)
+        download_tutorial(url, username, password)
+else:
+    if arguments.url:
+        url = arguments.url
+    else:
+        url = input("URL of tutorial: ")
+    download_tutorial(url, username, password)

@@ -35,5 +35,6 @@
 ### Run
 ```
 ./lynder.py
-./lynder.py LINK_OF_TUTORIAL
+./lynder.py --url URL_OF_TUTORIAL
+./lynder.py --file list.txt
 ```

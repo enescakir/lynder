@@ -12,8 +12,8 @@
 ### Folder Structure
 ```
 - Tutorial Folder
----- Content.md
----- Overview.md
+---- CONTENT.md
+---- OVERVIEW.md
 ---- 1 - Chapter A
 -------- 1 - Topic A Video
 -------- 1 - Topic A Transcript

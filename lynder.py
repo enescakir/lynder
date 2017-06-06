@@ -4,11 +4,20 @@ import os, sys, datetime, time
 import requests
 import argparse
 
+def download_tutorial(link, username, password):
+    tutorial = get_tutorial_data(link)
+    create_folders(tutorial)
+    create_overview_md(tutorial)
+    create_content_md(tutorial)
+    download_videos(tutorial, username, password)
+    return tutorial
+
 def get_tutorial_data(link):
     tutorial = {}
     response = requests.get(link)
     soup = BeautifulSoup(response.text, "html.parser")
     tutorial["title"] = soup.find('h1', attrs={'class':'default-title'}).text.strip()
+    print("\n\"" + tutorial["title"] + "\" is found.")
     tutorial["author"] = soup.find('cite', attrs={'data-ga-label':'author-name'}).text.strip()
     tutorial["released_at"] = soup.find('span', attrs={'id':'release-date'}).text.strip()
     tutorial["time_required"] = soup.find('span', attrs={'itemprop':'timeRequired'}).text.strip()
@@ -17,7 +26,7 @@ def get_tutorial_data(link):
     tutorial["exercise_file"] = soup.find('section', attrs={'id':'tab-exercise-files'}).text
     tutorial["subject_tags"] = [tag.text.strip() for tag in soup.findAll('a', attrs={'data-ga-label':'topic-tag'})]
     tutorial["software_tags"] = [tag.text.strip() for tag in soup.findAll('a', attrs={'data-ga-label':'software-tag'})]
-    tutorial["download_at"] = datetime.datetime.now().strftime("%b %d, %Y")
+    tutorial["downloaded_at"] = datetime.datetime.now().strftime("%b %d, %Y")
 
     chapters = {}
     toc = soup.find('ul', attrs={'class':'course-toc'})
@@ -30,8 +39,45 @@ def get_tutorial_data(link):
             chapters[ch.text.strip()] = lectures
 
     tutorial["chapters"] = chapters
+    print("\tIt has " + str(len(chapters)) + " chapters.")
     return tutorial
 
+def create_folders(tutorial):
+    os.mkdir(tutorial["title"])
+    os.chdir(tutorial["title"])
+    print("\t\"" + tutorial["title"] + "\" folder is created.")
+    for chapter in tutorial["chapters"]:
+        os.mkdir(chapter)
+        print("\t\"" + chapter + "\" folder is created.")
+
+def create_overview_md(tutorial):
+    overview = open("OVERVIEW.md", "w")
+    overview.write("**Title:** " + tutorial["title"] + "\n")
+    overview.write("**Author:** " + tutorial["author"] + "\n")
+    overview.write("**Released at:** " + tutorial["released_at"] + "\n")
+    overview.write("**Downloaded at:** " + tutorial["downloaded_at"] + "\n")
+    overview.write("**Time Required:** " + tutorial["time_required"] + "\n")
+    overview.write("**Level:** " + tutorial["level"] + "\n")
+    overview.write("**Subject Tags:** " + ', '.join(tutorial["subject_tags"]) + "\n")
+    overview.write("**Software Tags:** " + ', '.join(tutorial["software_tags"]) + "\n")
+    overview.write("**Description:** \n\t" + tutorial["description"] + "\n")
+    overview.close()
+
+def create_content_md(tutorial):
+    content = open("CONTENT.md", "w")
+    content.write( "# "+ tutorial["title"] + " with " + tutorial["author"] + " on lynda.com \n")
+    for chapter, lectures in tutorial["chapters"].items():
+        print(lectures)
+        content.write( "##" + chapter + "\n")
+        # for lecture in lectures:
+        #     print lecture
+            # content.write( "##" + chapter + "\n")
+    content.close()
+
+def download_videos(tutorial, username, password):
+    pass
+
+### MAIN METHOD
 if len(sys.argv) == 2:
     link = sys.argv[1]
 else:
@@ -39,5 +85,4 @@ else:
 username = input("Lynda Username: ")
 password = input("Lynda Password: ")
 
-tutorial = get_tutorial_data(link)
-print(tutorial)
+download_tutorial(link, username, password)

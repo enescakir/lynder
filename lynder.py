@@ -62,17 +62,18 @@ def create_overview_md(tutorial):
     overview.write("**Software Tags:** " + ', '.join(tutorial["software_tags"]) + "\n")
     overview.write("**Description:** \n\t" + tutorial["description"] + "\n")
     overview.close()
+    print("\tOVERVIEW.md is created.")
 
 def create_content_md(tutorial):
     content = open("CONTENT.md", "w")
     content.write( "# "+ tutorial["title"] + " with " + tutorial["author"] + " on lynda.com \n")
     for chapter, lectures in tutorial["chapters"].items():
-        print(lectures)
-        content.write( "##" + chapter + "\n")
-        # for lecture in lectures:
-        #     print lecture
-            # content.write( "##" + chapter + "\n")
+        content.write( "## " + chapter + "\n")
+        for lecture in lectures:
+            content.write( "### " + lecture[0] + "\n")
+        content.write("\n")
     content.close()
+    print("\tCONTENT.md is created.")
 
 def download_videos(tutorial, username, password):
     pass

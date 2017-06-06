@@ -82,8 +82,9 @@ def download_videos(tutorial, username, password):
     for chapter, lectures in tutorial["chapters"].items():
         os.chdir(chapter)
         for index, lecture in enumerate(lectures):
+            os.system('clear')
             print("\n\t\"" + lecture[0] + "\" is downloading...")
-            os.system("youtube-dl --newline --output \"" + str(index + 1) + " - %(title)s.%(ext)s\" --username " + username + " --password " + password + " " + lecture[1] + " --write-sub --embed-subs | grep download")
+            os.system("youtube-dl --output \"" + str(index + 1) + " - %(title)s.%(ext)s\" --username " + username + " --password " + password + " " + lecture[1] + " --write-sub --embed-subs")
             print("\t\"" + lecture[0] + "\" was downloaded.")
         os.chdir("..")
     print("DOWNLOADING IS DONE")

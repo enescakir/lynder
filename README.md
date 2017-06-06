@@ -3,8 +3,11 @@
 
 ### Requirements
 - [Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
+  `pip3 install beautifulsoup4`
 - [youtube-dl](https://rg3.github.io/youtube-dl/)
+  `brew install youtube-dl`
 - [Requests](http://docs.python-requests.org/en/master/)
+  `pip3 install requests`
 
 ### Folder Structure
 ```
@@ -30,5 +33,7 @@
 ```
 
 ### Run
-`./lynder.py`
-`./lynder.py LINK_OF_TUTORIAL`
+```
+./lynder.py
+./lynder.py LINK_OF_TUTORIAL
+```

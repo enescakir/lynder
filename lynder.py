@@ -4,7 +4,10 @@ import os, sys, datetime, time
 import requests
 import argparse
 
+HOME_DIR = os.getcwd()
+
 def download_tutorial(link, username, password):
+    os.chdir(HOME_DIR)
     tutorial = get_tutorial_data(link)
     create_folders(tutorial)
     create_overview_md(tutorial)
@@ -78,9 +81,9 @@ def create_content_md(tutorial):
 def download_videos(tutorial, username, password):
     for chapter, lectures in tutorial["chapters"].items():
         os.chdir(chapter)
-        for lecture in lectures:
+        for index, lecture in enumerate(lectures):
             print("\n\t\"" + lecture[0] + "\" is downloading...")
-            os.system("youtube-dl --newline --username " + username + " --password " + password + " " + lecture[1] + " --write-sub --embed-subs | grep download")
+            os.system("youtube-dl --newline --output \"" + str(index + 1) + " - %(title)s.%(ext)s\" --username " + username + " --password " + password + " " + lecture[1] + " --write-sub --embed-subs | grep download")
             print("\t\"" + lecture[0] + "\" was downloaded.")
         os.chdir("..")
     print("DOWNLOADING IS DONE")

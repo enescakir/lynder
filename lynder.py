@@ -76,8 +76,14 @@ def create_content_md(tutorial):
     print("\tCONTENT.md is created.")
 
 def download_videos(tutorial, username, password):
-    pass
-
+    for chapter, lectures in tutorial["chapters"].items():
+        os.chdir(chapter)
+        for lecture in lectures:
+            print("\t" + lecture[0] + " is downloading...")
+            os.system("youtube-dl --newline --username " + username + " --password " + password + " " + lecture[1] + " --write-sub --embed-subs | grep download")
+            print("\t" + lecture[0] + " was downloaded.")
+        os.chdir("..")
+    print("DOWNLOADING IS DONE")
 ### MAIN METHOD
 if len(sys.argv) == 2:
     link = sys.argv[1]

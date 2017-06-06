@@ -1,11 +1,11 @@
 ## Lynder
-Lynder is a tutorial downloader.
+Lynder is a tutorial downloader from lynda.com website.
 
 You can download whole lectures of course by one-command.
 
 But able to download courses, you need to have Standard Lynda Account.
 
-It's just 24.99$. It's worth every penny.
+It's just 24.99$. I think it's worth every penny.
 
 ### Requirements
 - [Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
@@ -16,10 +16,11 @@ It's just 24.99$. It's worth every penny.
   `brew install youtube-dl`
 
 ### Install
-  `$ ./install.sh`
-  It calls install commands of requirements.
-
-  And it copies downloader to /usr/local/bin for calling globally.
+```bash
+  $ ./install.sh
+  # It calls install commands of requirements.
+  # And it copies downloader to /usr/local/bin for calling globally.
+```
 
 ### Folder Structure
 ```

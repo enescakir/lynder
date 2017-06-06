@@ -1,7 +1,10 @@
 ## Lynder
 Lynder is a tutorial downloader.
+
 You can download whole lectures of course by one-command.
+
 But able to download courses, you need to have Standard Lynda Account.
+
 It's just 24.99$. It's worth every penny.
 
 ### Requirements
@@ -15,6 +18,7 @@ It's just 24.99$. It's worth every penny.
 ### Install
   `$ ./install.sh`
   It calls install commands of requirements.
+
   And it copies downloader to /usr/local/bin for calling globally.
 
 ### Folder Structure

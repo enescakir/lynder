@@ -84,7 +84,7 @@ def download_videos(tutorial, username, password):
             print("\t\"" + lecture[0] + "\" was downloaded.")
         os.chdir("..")
     print("DOWNLOADING IS DONE")
-    os.sys("open .")
+    os.system("open .")
 
 ### MAIN METHOD
 parser = argparse.ArgumentParser(description='Lynda Tutorial Downloader')

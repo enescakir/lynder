@@ -45,7 +45,7 @@ It's just 24.99$. I think it's worth every penny.
 ---- Exercise Files
 ```
 
-### Run
+### Usage
 ```bash
 $ lynder.py
 

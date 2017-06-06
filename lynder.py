@@ -99,7 +99,7 @@ if arguments.file:
     urls = open(arguments.file,'r')
     for url in urls:
         print(url)
-        download_tutorial(url, username, password)
+        download_tutorial(url.strip(), username, password)
 else:
     if arguments.url:
         url = arguments.url

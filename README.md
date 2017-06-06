@@ -33,8 +33,15 @@
 ```
 
 ### Run
-```
+```bash
 ./lynder.py
+
+# Download a tutorial
 ./lynder.py --url URL_OF_TUTORIAL
+./lynder.py -u URL_OF_TUTORIAL
+
+# Download list of tutorials
+# Links are seperated line by line in the txt
 ./lynder.py --file list.txt
+./lynder.py -f list.txt
 ```

@@ -23,7 +23,7 @@ def get_tutorial_data(link):
     tutorial["time_required"] = soup.find('span', attrs={'itemprop':'timeRequired'}).text.strip()
     tutorial["description"] = soup.find('div', attrs={'itemprop':'description'}).text.strip()
     tutorial["level"] = soup.find('div', attrs={'class':'course-info-stat-cont'}).find('strong').text.strip()
-    tutorial["exercise_file"] = soup.find('section', attrs={'id':'tab-exercise-files'}).text
+    # tutorial["exercise_file"] = soup.find('section', attrs={'id':'tab-exercise-files'}).text or ""
     tutorial["subject_tags"] = [tag.text.strip() for tag in soup.findAll('a', attrs={'data-ga-label':'topic-tag'})]
     tutorial["software_tags"] = [tag.text.strip() for tag in soup.findAll('a', attrs={'data-ga-label':'software-tag'})]
     tutorial["downloaded_at"] = datetime.datetime.now().strftime("%b %d, %Y")
@@ -79,11 +79,12 @@ def download_videos(tutorial, username, password):
     for chapter, lectures in tutorial["chapters"].items():
         os.chdir(chapter)
         for lecture in lectures:
-            print("\t" + lecture[0] + " is downloading...")
+            print("\n\t\"" + lecture[0] + "\" is downloading...")
             os.system("youtube-dl --newline --username " + username + " --password " + password + " " + lecture[1] + " --write-sub --embed-subs | grep download")
-            print("\t" + lecture[0] + " was downloaded.")
+            print("\t\"" + lecture[0] + "\" was downloaded.")
         os.chdir("..")
     print("DOWNLOADING IS DONE")
+    os.sys("open .")
 ### MAIN METHOD
 if len(sys.argv) == 2:
     link = sys.argv[1]

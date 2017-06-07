@@ -8,15 +8,21 @@ import threading
 from queue import Queue
 import subprocess
 
-HOME_DIR = os.getcwd()
+def parse_arguments():
+    parser = argparse.ArgumentParser(description='Lynda Tutorial Downloader')
+    parser.add_argument('-u', '--url', dest="url", action='store')
+    parser.add_argument('-f', '--file', dest="file", action='store')
+    parser.add_argument('-c', '--cookies', dest="cookies", action='store')
+    parser.add_argument('-w', '--worker', nargs=1, dest="worker", action='store')
+    return parser.parse_args()
 
-def download_tutorial(link, username, password):
+def download_tutorial(link):
     os.chdir(HOME_DIR)
     tutorial = get_tutorial_data(link)
     create_folders(tutorial)
     create_overview_md(tutorial)
     create_content_md(tutorial)
-    download_videos(tutorial, username, password)
+    download_videos(tutorial)
     return tutorial
 
 def get_tutorial_data(link):
@@ -82,7 +88,7 @@ def create_content_md(tutorial):
     content.close()
     print("\tCONTENT.md is created.")
 
-def download_videos(tutorial, username, password):
+def download_videos(tutorial):
     for chapter, lectures in tutorial["chapters"].items():
         os.chdir(chapter)
         for index, lecture in enumerate(lectures):
@@ -98,21 +104,27 @@ def download_videos(tutorial, username, password):
     os.system("open .")
 
 def download_lecture(lecture, index):
+    if COOKIES:
+        authentication = "--cookies " + COOKIES
+    else:
+        authentication = "--username " + USERNAME + " --password " + PASSWORD
+
     print("\n\t\"" + lecture[0] + "\" is downloading...")
-    os.system("youtube-dl --output \"" + str(index + 1) + " - %(title)s.%(ext)s\" --username " + username + " --password " + password + " " + lecture[1] + " --write-sub --embed-subs")
+    os.system("youtube-dl --output \"" + str(index + 1) + " - %(title)s.%(ext)s\" --write-sub --embed-subs " + authentication + " " + lecture[1] + " | grep download")
     print("\t\"" + lecture[0] + "\" was downloaded.")
 
 ### MAIN METHOD
-parser = argparse.ArgumentParser(description='Lynda Tutorial Downloader')
-parser.add_argument('-u', '--url', dest="url", action='store')
-parser.add_argument('-f', '--file', dest="file", action='store')
-parser.add_argument('-w', '--worker', nargs=1, dest="worker", action='store')
-arguments = parser.parse_args()
-
-username = input("Lynda Username: ")
-password = input("Lynda Password: ")
-
+HOME_DIR = os.getcwd()
 WORKER_NUM = 2
+COOKIES = None
+
+arguments = parse_arguments()
+
+if arguments.cookies:
+    COOKIES = arguments.cookies
+else:
+    USERNAME = input("Lynda Username: ")
+    PASSWORD = input("Lynda Password: ")
 
 if arguments.worker:
     WORKER_NUM = int(arguments.worker[0])
@@ -122,10 +134,10 @@ print("Number of workers is: ", WORKER_NUM)
 if arguments.file:
     urls = open(arguments.file,'r')
     for url in urls:
-        download_tutorial(url.strip(), username, password)
+        download_tutorial(url.strip())
 else:
     if arguments.url:
         url = arguments.url
     else:
         url = input("URL of tutorial: ")
-    download_tutorial(url, username, password)
+    download_tutorial(url)

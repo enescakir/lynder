@@ -57,4 +57,10 @@ $ lynder.py -u URL_OF_TUTORIAL
 # Links are seperated line by line in the txt
 $ lynder.py --file list.txt
 $ lynder.py -f list.txt
+
+# Also you can use cookies for authentication
+# It's faster than simple username and password
+$ lynder.py -f list.txt -c cookies.txt
+
 ```
+In order to extract cookies from browser use [cookies.txt](https://chrome.google.com/webstore/detail/cookiestxt/njabckikapfpffapmjgojcnbfjonfjfg) extension

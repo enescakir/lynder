@@ -3,6 +3,10 @@ from bs4 import BeautifulSoup
 import os, sys, datetime, time
 import requests
 import argparse
+from threading import Thread
+import threading
+from queue import Queue
+import subprocess
 
 HOME_DIR = os.getcwd()
 
@@ -82,22 +86,38 @@ def download_videos(tutorial, username, password):
     for chapter, lectures in tutorial["chapters"].items():
         os.chdir(chapter)
         for index, lecture in enumerate(lectures):
-            os.system('clear')
-            print("\n\t\"" + lecture[0] + "\" is downloading...")
-            os.system("youtube-dl --output \"" + str(index + 1) + " - %(title)s.%(ext)s\" --username " + username + " --password " + password + " " + lecture[1] + " --write-sub --embed-subs")
-            print("\t\"" + lecture[0] + "\" was downloaded.")
+            while(threading.activeCount() > WORKER_NUM):
+                time.sleep(5)
+            th = Thread(target=download_lecture, args=(lecture,index,))
+            th.deamon = True
+            th.start()
+            th.join()
+
         os.chdir("..")
     print("DOWNLOADING IS DONE")
     os.system("open .")
+
+def download_lecture(lecture, index):
+    print("\n\t\"" + lecture[0] + "\" is downloading...")
+    os.system("youtube-dl --output \"" + str(index + 1) + " - %(title)s.%(ext)s\" --username " + username + " --password " + password + " " + lecture[1] + " --write-sub --embed-subs")
+    print("\t\"" + lecture[0] + "\" was downloaded.")
 
 ### MAIN METHOD
 parser = argparse.ArgumentParser(description='Lynda Tutorial Downloader')
 parser.add_argument('-u', '--url', dest="url", action='store')
 parser.add_argument('-f', '--file', dest="file", action='store')
+parser.add_argument('-w', '--worker', nargs=1, dest="worker", action='store')
 arguments = parser.parse_args()
 
 username = input("Lynda Username: ")
 password = input("Lynda Password: ")
+
+WORKER_NUM = 2
+
+if arguments.worker:
+    WORKER_NUM = int(arguments.worker[0])
+
+print("Number of workers is: ", WORKER_NUM)
 
 if arguments.file:
     urls = open(arguments.file,'r')

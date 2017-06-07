@@ -8,7 +8,10 @@ import threading
 from queue import Queue
 import subprocess
 
+HOME_DIR = os.getcwd()
+
 def download_tutorial(link, username, password):
+    os.chdir(HOME_DIR)
     tutorial = get_tutorial_data(link)
     create_folders(tutorial)
     create_overview_md(tutorial)
@@ -40,7 +43,7 @@ def get_tutorial_data(link):
             lectures = []
             for lecture in chapter.find_all('a', attrs={'class':'video-name'}):
                 lectures.append((lecture.text.strip(), lecture["href"]))
-            chapters[ch.text.strip()] = lectures
+            chapters[ch.text.strip().replace(":", " -").replace('/', "-")] = lectures
 
     tutorial["chapters"] = chapters
     print("\tIt has " + str(len(chapters)) + " chapters.")
@@ -82,10 +85,10 @@ def create_content_md(tutorial):
 def download_videos(tutorial, username, password):
     for chapter, lectures in tutorial["chapters"].items():
         os.chdir(chapter)
-        for lecture in lectures:
+        for index, lecture in enumerate(lectures):
             while(threading.activeCount() > WORKER_NUM):
                 time.sleep(5)
-            th = Thread(target=download_lecture, args=(lecture,))
+            th = Thread(target=download_lecture, args=(lecture,index,))
             th.deamon = True
             th.start()
             th.join()
@@ -94,12 +97,10 @@ def download_videos(tutorial, username, password):
     print("DOWNLOADING IS DONE")
     os.system("open .")
 
-def download_lecture(lecture):
+def download_lecture(lecture, index):
     print("\n\t\"" + lecture[0] + "\" is downloading...")
-    print(lecture[1])
-    os.system("youtube-dl --newline --username " + username + " --password " + password + " " + lecture[1] + " --write-sub --embed-subs | grep download &")
+    os.system("youtube-dl --output \"" + str(index + 1) + " - %(title)s.%(ext)s\" --username " + username + " --password " + password + " " + lecture[1] + " --write-sub --embed-subs")
     print("\t\"" + lecture[0] + "\" was downloaded.")
-
 
 ### MAIN METHOD
 parser = argparse.ArgumentParser(description='Lynda Tutorial Downloader')
@@ -121,7 +122,6 @@ print("Number of workers is: ", WORKER_NUM)
 if arguments.file:
     urls = open(arguments.file,'r')
     for url in urls:
-        print(url)
         download_tutorial(url.strip(), username, password)
 else:
     if arguments.url:

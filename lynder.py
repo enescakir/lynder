@@ -121,7 +121,8 @@ COOKIES = None
 arguments = parse_arguments()
 
 if arguments.cookies:
-    COOKIES = arguments.cookies
+    COOKIES = os.path.abspath(arguments.cookies)
+    print("Cookies location: " + COOKIES)
 else:
     USERNAME = input("Lynda Username: ")
     PASSWORD = input("Lynda Password: ")

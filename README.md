@@ -47,20 +47,20 @@ It's just 24.99$. I think it's worth every penny.
 
 ### Usage
 ```bash
-$ lynder.py
+$ lynder
 
 # Download a tutorial
-$ lynder.py --url URL_OF_TUTORIAL
-$ lynder.py -u URL_OF_TUTORIAL
+$ lynder --url URL_OF_TUTORIAL
+$ lynder -u URL_OF_TUTORIAL
 
 # Download list of tutorials
 # Links are seperated line by line in the txt
-$ lynder.py --file list.txt
-$ lynder.py -f list.txt
+$ lynder --file list.txt
+$ lynder -f list.txt
 
 # Also you can use cookies for authentication
 # It's faster than simple username and password
-$ lynder.py -f list.txt -c cookies.txt
+$ lynder -f list.txt -c cookies.txt
 
 ```
 In order to extract cookies from browser use [cookies.txt](https://chrome.google.com/webstore/detail/cookiestxt/njabckikapfpffapmjgojcnbfjonfjfg) extension

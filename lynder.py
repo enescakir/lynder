@@ -49,15 +49,15 @@ def get_tutorial_data(link):
             lectures = []
             for lecture in chapter.find_all('a', attrs={'class':'video-name'}):
                 lectures.append((lecture.text.strip(), lecture["href"]))
-            chapters[ch.text.strip().replace(":", " -").replace('/', "-")] = lectures
+            chapters[ch.text.strip().replace(":", " -").replace('/', "-").replace('.', "-") or "Unknown-Chapter"] = lectures
 
     tutorial["chapters"] = chapters
     print("\tIt has " + str(len(chapters)) + " chapters.")
     return tutorial
 
 def create_folders(tutorial):
-    os.mkdir(tutorial["title"])
-    os.chdir(tutorial["title"])
+    os.mkdir(tutorial["title"].replace(":", " -").replace('/', "-").replace('.', "-"))
+    os.chdir(tutorial["title"].replace(":", " -").replace('/', "-").replace('.', "-"))
     print("\t\"" + tutorial["title"] + "\" folder is created.")
     for chapter in tutorial["chapters"]:
         os.mkdir(chapter)

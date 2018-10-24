@@ -14,6 +14,7 @@ def parse_arguments():
     parser.add_argument('-f', '--file', dest="file", action='store')
     parser.add_argument('-c', '--cookies', dest="cookies", action='store')
     parser.add_argument('-w', '--worker', nargs=1, dest="worker", action='store')
+    parser.add_argument('-s', '--silent', dest="silent", action='store', default=None)
     return parser.parse_args()
 
 def download_tutorial(link):
@@ -56,12 +57,18 @@ def get_tutorial_data(link):
     return tutorial
 
 def create_folders(tutorial):
-    os.mkdir(tutorial["title"])
+    for char in ' ?.!/;:öä':
+        tutorial["title"] = tutorial["title"].replace(char,'')
+    if not os.path.exists(tutorial["title"]):
+        os.mkdir(tutorial["title"])
+        print("\t\"" + tutorial["title"] + "\" folder is created.")
+    else:
+        print("\t\"" + tutorial["title"] + "\" folder already exists.")
     os.chdir(tutorial["title"])
-    print("\t\"" + tutorial["title"] + "\" folder is created.")
     for chapter in tutorial["chapters"]:
-        os.mkdir(chapter)
-        print("\t\"" + chapter + "\" folder is created.")
+        if not os.path.exists(chapter):
+            os.mkdir(chapter)
+            print("\t\"" + chapter + "\" folder is created.")
 
 def create_overview_md(tutorial):
     overview = open("OVERVIEW.md", "w")
@@ -101,7 +108,8 @@ def download_videos(tutorial):
 
         os.chdir("..")
     print("DOWNLOADING IS DONE")
-    os.system("open .")
+    if arguments.silent is None:
+        os.system("open .")
 
 def download_lecture(lecture, index):
     if COOKIES:
@@ -129,7 +137,7 @@ else:
 
 if arguments.worker:
     WORKER_NUM = int(arguments.worker[0])
-
+    
 print("Number of workers is: ", WORKER_NUM)
 
 if arguments.file:

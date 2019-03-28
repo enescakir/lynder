@@ -1,2 +1,0 @@
-https://www.lynda.com/Webpack-tutorials/Learn-Webpack-Basics/483222-2.html
-https://www.lynda.com/Express-js-tutorials/Building-Website-Node-js-Express-js/502310-2.html

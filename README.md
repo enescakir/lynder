@@ -1,11 +1,7 @@
 ## Lynder
-Lynder is a tutorial downloader from lynda.com website.
+Lynder is a tutorial downloader from lynda.com website, based on `youtube-dl`.
 
-You can download whole lectures of course by one-command.
-
-But able to download courses, you need to have Standard Lynda Account.
-
-It's just 24.99$. I think it's worth every penny.
+The CLI allows you to download whole lectures of any course in one command, providing you have a [paid Lynda.com account](https://www.linkedin.com/learning/subscription/products).
 
 ### Requirements
 - [Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
@@ -18,8 +14,7 @@ It's just 24.99$. I think it's worth every penny.
 ### Install
 ```bash
   $ ./install.sh
-  # It calls install commands of requirements.
-  # And it copies downloader to /usr/local/bin for calling globally.
+  # Installs the requirements and globally installs to /usr/local/bin.
 ```
 
 ### Folder Structure
@@ -47,20 +42,18 @@ It's just 24.99$. I think it's worth every penny.
 
 ### Usage
 ```bash
-$ lynder
+  $ lynder
 
-# Download a tutorial
-$ lynder --url URL_OF_TUTORIAL
-$ lynder -u URL_OF_TUTORIAL
+  # Download a tutorial.
+  $ lynder --url URL_OF_TUTORIAL
+  $ lynder -u URL_OF_TUTORIAL
 
-# Download list of tutorials
-# Links are seperated line by line in the txt
-$ lynder --file list.txt
-$ lynder -f list.txt
+  # Download a list of tutorials.
+  # Links are seperated line by line in the .txt.
+  $ lynder --file list.txt
+  $ lynder -f list.txt
 
-# Also you can use cookies for authentication
-# It's faster than simple username and password
-$ lynder -f list.txt -c cookies.txt
-
+  # You can also supply cookies for faster, simple authentication.
+  $ lynder -f list.txt -c cookies.txt
 ```
-In order to extract cookies from browser use [cookies.txt](https://chrome.google.com/webstore/detail/cookiestxt/njabckikapfpffapmjgojcnbfjonfjfg) extension
+In order to extract cookies from you browser, consider using the [cookies.txt](https://chrome.google.com/webstore/detail/cookiestxt/njabckikapfpffapmjgojcnbfjonfjfg) extension.

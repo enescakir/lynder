@@ -61,14 +61,14 @@ def create_folders(tutorial):
         tutorial["title"] = tutorial["title"].replace(char,'')
     if not os.path.exists(tutorial["title"]):
         os.mkdir(tutorial["title"])
-        print("\t\"" + tutorial["title"] + "\" folder is created.")
+        print("\t\"" + tutorial["title"] + "\" folder has been created.")
     else:
         print("\t\"" + tutorial["title"] + "\" folder already exists.")
     os.chdir(tutorial["title"])
     for chapter in tutorial["chapters"]:
         if not os.path.exists(chapter):
             os.mkdir(chapter)
-            print("\t\"" + chapter + "\" folder is created.")
+            print("\t\"" + chapter + "\" folder has been created.")
 
 def create_overview_md(tutorial):
     overview = open("OVERVIEW.md", "w")
@@ -107,7 +107,7 @@ def download_videos(tutorial):
             th.join()
 
         os.chdir("..")
-    print("DOWNLOADING IS DONE")
+    print("Downloading has finished.")
     if arguments.silent is None:
         os.system("open .")
 
@@ -117,9 +117,9 @@ def download_lecture(lecture, index):
     else:
         authentication = "--username " + USERNAME + " --password " + PASSWORD
 
-    print("\n\t\"" + lecture[0] + "\" is downloading...")
+    print("\n\t\"" + lecture[0] + "\" is downloading.")
     os.system("youtube-dl --output \"" + str(index + 1) + " - %(title)s.%(ext)s\" --write-sub --embed-subs " + authentication + " " + lecture[1] + " | grep download")
-    print("\t\"" + lecture[0] + "\" was downloaded.")
+    print("\t\"" + lecture[0] + "\" has downloaded.")
 
 ### MAIN METHOD
 HOME_DIR = os.getcwd()
@@ -137,8 +137,8 @@ else:
 
 if arguments.worker:
     WORKER_NUM = int(arguments.worker[0])
-    
-print("Number of workers is: ", WORKER_NUM)
+
+print("Number of workers: ", WORKER_NUM)
 
 if arguments.file:
     urls = open(arguments.file,'r')
